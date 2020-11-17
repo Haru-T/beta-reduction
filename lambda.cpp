@@ -316,7 +316,7 @@ LambdaPtr beta_reduction(LambdaPtr l)
             auto& id = std::get<Id>(*abstr.id);
             if (std::holds_alternative<Abstr>(*abstr.expr)) {
                 std::string& symbol = std::get<Id>(*std::get<Abstr>(*abstr.expr).id).symbol;
-                if (std::visit([&](auto x) { return x.contain_symbol(symbol); },
+                if (std::visit([&](auto& x) { return x.contain_symbol(symbol); },
                         *app.right)) {
 #ifndef NDEBUG
                     std::string before = abstr.to_string();
@@ -330,7 +330,7 @@ LambdaPtr beta_reduction(LambdaPtr l)
 #endif
                             break;
                         }
-                        if (s != id.symbol && !std::visit([&](auto x) { return x.contain_symbol(s); }, *app.right)) {
+                        if (s != id.symbol && !std::visit([&](auto& x) { return x.contain_symbol(s); }, *app.right)) {
                             symbol = s;
                             std::get<Abstr>(*abstr.expr).refresh_symbol();
 #ifndef NDEBUG
